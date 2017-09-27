@@ -11,3 +11,5 @@ system("echo ;rm -rf /; >> /tmp/abc.txt")
 1~3이 참이면 권고
 
 system("echo hello world") <= 심각하지않음
+
+find . -executable -exec egrep system {} \; 2</dev/null //system이 있는 실행가능한 파일
