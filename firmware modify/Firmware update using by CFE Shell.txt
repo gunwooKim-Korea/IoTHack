@@ -1,0 +1,27 @@
+CFE 쉘을 이용한 펌웨어 업데이트
+
+1. tftp server 설치 및 실행
+$ sudo apt-get install xinetd tftpd tftp
+[xinetd 설정파일 생성 : /etc/xinetd.d/tftpd ]
+
+service tftp
+{
+  protocol = udp
+  port = 69
+  socket_type = dgram
+  wait = yes
+  user = nobody
+  server = /sr/sbin/in.tftpd
+  server_args = /tftproot
+  disable = no
+}
+
+$ mkdir /tftproot
+$ sudo chmod 777 /tftproot
+$ sudo chown nobody /tftproot
+$ sudo /etc/init.d/xinetd restart
+$ cp 펌웨어이미지파일 /tftproot
+
+2. CFE 쉘의 flash 명령어를 이용한 펌웨어 업데이트
+$ flash -ctheader tftp서버주로:경로/펌웨어이미지파일명 flash0
+ex) CFE> flash -ctheader 192.168.0.100:new-firmware.bin flash0
