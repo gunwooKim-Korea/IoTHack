@@ -1,0 +1,73 @@
+import RPi.GPIO as GPIO
+import random
+import itertools    
+
+def selectmode(data):  
+        GPIO.output(TMS,data)
+        GPIO.output(TCK,1)
+        GPIO.output(TCK,0)
+
+def senddata(data): 
+    GPIO.output(TDI,data)
+    GPIO.output(TCK,1)
+    GPIO.output(TCK,0)
+    return GPIO.input(TDO)
+
+b_pin = input("Enter number of channels to use 4-21 :")
+
+pin_array=[]
+
+for i in range(2,b_pin+2):  
+    pin_array.append(i)
+
+c_pin_array = itertools.permutations(pin_array,4) 
+
+for ii in c_pin_array:    
+    TCK=ii[0]   
+    TMS=ii[1]
+    TDI=ii[2]
+    TDO=ii[3]
+    found=0
+
+    GPIO.setmode(GPIO.BCM)  
+    GPIO.setup(TCK, GPIO.OUT)
+    GPIO.setup(TDO, GPIO.IN)
+    GPIO.setup(TMS, GPIO.OUT)
+    GPIO.setup(TDI, GPIO.OUT)
+    
+    for i in range(0,5):        
+        selectmode(1)
+                
+    selectmode(0)       //Test-Logic-Reset �� Run-Test/Idle 
+    selectmode(1)       //Run-Test/Idle �� Select DR-SCAN
+    selectmode(1)       //Select DR-SCAN �� Select IR-SCAN
+    selectmode(0)       //Select IR-SCAN  ��  Capture-IR
+    selectmode(0)       //Capture-IR  ��  Shift-IR
+
+    for i in range(0,100):
+        senddata(1)
+
+    selectmode(1)       //SHIFT-IR �� EXIT1-IR
+    selectmode(1)       //EXIT1-IR �� UPDATE-IR
+    selectmode(1)       //UPDATE-IR �� SELECT DR-SCAN
+    selectmode(0)       //SELECT DR-SCAN  �� CAPTURE-DR
+    selectmode(0)       //CAPTURE-DR �� SHIFT-DR
+
+    d1=range(0,50)  
+    for i in range(0,50):
+        d1[i] = random.randrange(0,2)       
+
+    for i in range(0,50):      
+        result = senddata(d1[i])
+        if result != d1[i]:     
+            found=0
+            break
+        if i==49 and result == d1[i]:       
+            found = 1
+            break
+    if found == 1:      
+        print "[*]FOUND TCK=",TCK
+        print "[*]FOUND TMS=",TMS
+        print "[*]FOUND TDI=",TDI
+        print "[*]FOUND TDO=",TDO
+    GPIO.cleanup()
