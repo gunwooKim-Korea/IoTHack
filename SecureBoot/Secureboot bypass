@@ -1,0 +1,17 @@
+Firmware에 개발사의 서명을 한다. (기업의 private key 사용)
+서명 요소에는 Bootcode가 있다.
+
+의문점 1.
+서명은 어디에 둬야할까?
+
+일단 부트로더. boot loader를 해킹할 가능성
+
+두번째는 SoC. SoC는 해킹 굉장히 어려움.
+
+서명을 위한 public key는? 아예 수정불가능한 곳에 둬야함.
+
+그래서 따로 secure storage(Read-Only)영역에 둬야함
+
+Secure boot bypass 
+우회방법1 : boot loader를 조작
+우회방법2 : public key를 변경
