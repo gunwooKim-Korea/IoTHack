@@ -1,1 +1,20 @@
-a
+PEM format
+-이 5개있고, BEGIN RSA PRIVATE KEY로 시작하면 PEM 포맷
+
+-----BEGIN RSA PRIVATE KEY-----
+ASDFQWEGHSJKVBQ!@#f<-base64
+-----END RSA PRIVATE KEY-----
+안에는 base64로 인코딩한것
+
+opensll rsa -inform PEM 0noout -text(text로 출력) -pubin(public key) < public2.key
+
+//
+
+ 공약수를 활용한 RSA crack 예
+
+1. public key 정보 확인
+$ openssl rsa -noout -text inform PEM -text < public1.key
+$ openssl rsa -noout -text inform PEM -text < public2.key
+
+2. 공개키로부터 추출한 두개의 N값에 공약수가 존재하는지 확인
+$ python gcd.py
