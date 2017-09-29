@@ -17,4 +17,25 @@ $ openssl rsa -noout -text inform PEM -text < public1.key
 $ openssl rsa -noout -text inform PEM -text < public2.key
 
 2. 공개키로부터 추출한 두개의 N값에 공약수가 존재하는지 확인
-$ python gcd.py
+$ python gcd.py (코드에 n1과 n2 값을 아래와 같이 지정
+
+*참고: 명령 모드에서 아래와 같이 입력하면 12번째 라인에 공개키 값을 쉽게 복사 가능
+:12!openssl rsa -noout -text -inform PEM -pubin < public1.key
+
+n1_hex=
+
+n2_hex=
+
+값을 넣은 후 스크립트 실행
+
+3. 공약수가 존재하는 경우 간단하게 소인수 분해가 가능
+gcd(p) : 87083....
+q1 : 870686280.....
+q2 : 981113074....
+
+4. 소인수분해하여 알아낸 p,q1을 이용해 private1.key 생성
+p,q2를 이용해 private2.key 생성
+$ python generate_privatekey_with_pq.py > private1.key
+
+5. 복원한 private key를 이용해 복호화 시도
+$ openssl rsautl -decrypt -inform PEM -inkey private1.eky < message
