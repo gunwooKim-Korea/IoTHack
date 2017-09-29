@@ -3,3 +3,6 @@ https://www.youtube.com/watch?v=N0p3_ES2dBU
 https://lists.gnu.org/archive/html/discuss-gnuradio/2015-07/pdfisIxZfvdtb.pdf
 
 https://wiki.gnuradio.org/index.php/Main_Page
+
+SDR Hacking
+https://www.csun.edu/~skatz/katzpage/sdr_project/sdr/grc_tutorial1.pdf
